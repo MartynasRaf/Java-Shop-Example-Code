@@ -101,11 +101,17 @@ public abstract class Inventory {
         return items.size();
     }
 
+    public List<Commodity> getInventory(){
+        return Collections.unmodifiableList(items);
+    }
+
     public float getInventoryPrice(){
         float sum=0;
 
         for (int i=0;i<items.size();i++){
-            sum+=items.get(i).getPrice()+items.get(i).getAmount();
+            if(items.get(i).getAmount()!=0) {
+                sum += items.get(i).getPrice() * items.get(i).getAmount();
+            }
         }
 
         return sum;

@@ -10,10 +10,10 @@ public class TextUI {
     private static DecimalFormat df = new DecimalFormat("0.00");
 
 
-    CustomerInventory customerInventory;
+    Customer customerInventory;
     Scanner scanner;
 
-    public TextUI(CustomerInventory customerInventory){
+    public TextUI(Customer customerInventory){
         this.customerInventory = customerInventory;
         scanner = new Scanner(System.in);
     }
@@ -47,12 +47,12 @@ public class TextUI {
              }
 
             if(input.equals("P")) {
-                getShoppingBagPrice();
+              //  getShoppingBagPrice();
                 continue;
             }
 
             if(input.equals("B")){
-                customerInventory.buyStorage();
+                customerInventory.buyInventory();
                 break;
             }
 
@@ -90,9 +90,9 @@ public class TextUI {
         }
     }
 
-    public void getShoppingBagPrice(){
-        System.out.println(df.format(customerInventory.getAllProductsPriceSum()));
-    }
+    //public void getShoppingBagPrice(){
+     //   System.out.println(df.format(customerInventory.getAllProductsPriceSum()));
+    //}
 
 
 }

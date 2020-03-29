@@ -3,7 +3,7 @@ package com.martynas;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class BusinessCustomer extends CustomerInventory implements Customer {
+public class BusinessCustomerInventory extends CustomerInventory implements Customer {
 
     public String name;
     public String getName(){return name;};
@@ -13,13 +13,13 @@ public class BusinessCustomer extends CustomerInventory implements Customer {
     float balance=0;
     public float getBalance(){ return balance; }
 
-    public BusinessCustomer(ShopInventory shopInventory, float balance){
+    public BusinessCustomerInventory(ShopInventory shopInventory, float balance){
         setShopInventory(shopInventory);
         this.balance=balance;
-        this.id=0;//ThreadLocalRandom.current().nextInt(0, 2 + 1);
+        this.id=ThreadLocalRandom.current().nextInt(0, 2 + 1);
     }
 
-    public BusinessCustomer(String name, ShopInventory shopInventory, float balance){
+    public BusinessCustomerInventory(String name, ShopInventory shopInventory, float balance){
         setShopInventory(shopInventory);
         this.balance=balance;
         this.name=name;
@@ -27,8 +27,20 @@ public class BusinessCustomer extends CustomerInventory implements Customer {
     }
 
     @Override
-    public float getAllProductsPriceSum() {
+    public float getInventoryPriceTotal() {
         return getInventoryPrice()/1.21f;
+    }
+
+    public void changeBalance(float change){
+        balance+=change;
+    }
+
+    public int buyInventory(){
+        return buyStorage(this);
+    }
+
+    public float getVat(){
+        return 0;
     }
 
     @Override

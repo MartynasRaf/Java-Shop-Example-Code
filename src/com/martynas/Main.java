@@ -11,15 +11,11 @@ public class Main {
 
         ShopInventory smallShopInventory = new ShopInventory("Maksima");
 
-        RegularCustomerInventory regularCustomerInventory = new RegularCustomerInventory(smallShopInventory,90);
+        RegularCustomerInventory regularCustomerInventory = new RegularCustomerInventory(smallShopInventory,12);
 
-        BusinessCustomer businessCustomer = new BusinessCustomer(smallShopInventory,90);
+        BusinessCustomerInventory businessCustomerInventory = new BusinessCustomerInventory(smallShopInventory,90);
 
-        if(regularCustomerInventory.equals(businessCustomer)){
-            System.out.println("Same");
-        }
-
-        TextUI ui = new TextUI(businessCustomer);
+        //TextUI ui = new TextUI(businessCustomerInventory);
 
         smallShopInventory.addItem("Eggs",3,100);
         smallShopInventory.addItem("Potatoes", 0.7f,100);
@@ -27,7 +23,17 @@ public class Main {
         smallShopInventory.addItem("Koka kola", 1.3f,100);
         smallShopInventory.addItem("Chips", 1.45f,100);
 
-        ui.customerTextUI();
+       //ui.customerTextUI();
+
+        Customer b = regularCustomerInventory;
+
+        b.addItem("Eggs",4);
+
+        System.out.println(b.getInventoryPriceTotal());
+        System.out.println(b.getBalance());
+        System.out.println(b.buyInventory());
+        System.out.println(b.getBalance());
+
 
     }
 }
