@@ -1,6 +1,14 @@
-package com.martynas;
+package com.martynas.Shop;
 
-public class ShopInventory extends Inventory implements Shop {
+import com.martynas.Commodity;
+import com.martynas.DesignPatterns.CommodityIterator;
+import com.martynas.Interfaces.Shop;
+import com.martynas.Inventory;
+
+import java.io.Serializable;
+import java.util.Iterator;
+
+public class ShopInventory extends Inventory implements Shop, Serializable {
 
     private String name;
     public String getName(){ return name; }
@@ -39,6 +47,23 @@ public class ShopInventory extends Inventory implements Shop {
         }
     }
 
+    public void addGlobalPrice(float amount){
+        Iterator iterator = CommodityIterator.forCommodities(getInventory());
+        while(iterator.hasNext()){
+            ((Commodity) iterator.next()).addPrice(amount);
+        }
 
+    }
+
+    /**
+     * Clone object
+     * @return super.clone()
+     * @throws CloneNotSupportedException
+     */
+    public Object clone() throws
+            CloneNotSupportedException
+    {
+        return super.clone();
+    }
 
 }

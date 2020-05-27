@@ -1,38 +1,89 @@
 package com.martynas;
 
-/**
- * Martynas Rafanavicius, pirkejas parduotuvej gali pirkti daiktus is parduotuves
- * Klase storage turi vaikus Customer ir Shop, nes jiems reikia Storint'i prekes
- */
+import com.martynas.Customer.CustomerInventory;
+import com.martynas.DesignPatterns.CustomerInventoryAddVATDecorator;
+import com.martynas.Exceptions.CustomerException;
+import com.martynas.Exceptions.ShopDoesNotExistException;
+import com.martynas.Interfaces.Customer;
+import com.martynas.Shop.ShopInventory;
+
+import java.io.*;
+import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ShopDoesNotExistException {
 
-        ShopInventory smallShopInventory = new ShopInventory("Maksima");
+        Scanner sc=new Scanner(System.in);
+        ShopInventory smallShopInventory =null;
 
-        RegularCustomerInventory regularCustomerInventory = new RegularCustomerInventory(smallShopInventory,12);
+        try(ObjectInputStream in=new ObjectInputStream(new FileInputStream("shopInv.ser")))
+        {
 
-        BusinessCustomerInventory businessCustomerInventory = new BusinessCustomerInventory(smallShopInventory,90);
 
-        //TextUI ui = new TextUI(businessCustomerInventory);
+            smallShopInventory = (ShopInventory) in.readObject();
 
-        smallShopInventory.addItem("Eggs",3,100);
-        smallShopInventory.addItem("Potatoes", 0.7f,100);
-        smallShopInventory.addItem("Ramen", 0.3f,100);
-        smallShopInventory.addItem("Koka kola", 1.3f,100);
-        smallShopInventory.addItem("Chips", 1.45f,100);
 
-       //ui.customerTextUI();
+            System.out.println("Object has been deserialized ");
 
-        Customer b = regularCustomerInventory;
+        }
 
-        b.addItem("Eggs",4);
+        catch(IOException ex)
+        {
+            String input;
 
-        System.out.println(b.getInventoryPriceTotal());
-        System.out.println(b.getBalance());
-        System.out.println(b.buyInventory());
-        System.out.println(b.getBalance());
+            System.out.println("Shop's Name: ");
+            input=sc.nextLine();
+            smallShopInventory=(ShopInventory) new ShopInventory(input);
+
+            if(smallShopInventory==null || smallShopInventory.getName().isEmpty()){
+                ex.printStackTrace();
+                System.exit(0);
+            }
+
+        }
+
+        catch(ClassNotFoundException ex)
+        {
+            ex.printStackTrace();
+        }
+
+        smallShopInventory.getItemsFromCSV("aaa.csv");
+
+        System.out.println(smallShopInventory.getListSize());
+
+        Customer regularCustomer= new CustomerInventoryAddVATDecorator(new CustomerInventory("Pranas",smallShopInventory,500f));
+
+        //regularCustomer.addItem("Eggs",5);
+
+        smallShopInventory.addGlobalPrice(6);
+
+        //regularCustomer.removeItem("Eggs",5);
+        //regularCustomer.addItem("Eggs",5);
+
+        try {
+            regularCustomer.buyStorage(regularCustomer);
+        }catch (CustomerException ex){
+            System.out.println(ex.getMessage());
+        }
+
+        try
+        {
+            FileOutputStream file = new FileOutputStream("shopInv.ser");
+            ObjectOutputStream out = new ObjectOutputStream(file);
+
+            out.writeObject(smallShopInventory);
+
+            out.close();
+            file.close();
+
+            System.out.println("Object has been serialized");
+
+        } catch(IOException ex)
+        {
+            ex.printStackTrace();
+        }
+
 
 
     }

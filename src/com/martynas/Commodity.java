@@ -1,6 +1,8 @@
 package com.martynas;
 
-public class Commodity {
+import java.util.Iterator;
+
+public class Commodity implements java.io.Serializable {
 
     private String name;
     private int amount;
@@ -34,15 +36,22 @@ public class Commodity {
     public  float getPrice(){
         return price;
     }
+    public  void addPrice(float amount) {price+=amount;}
 
+    /**
+     * Increase amount of this commodity in storage
+     * @param amountToIncrease
+     */
     public void increaseAmount( int amountToIncrease){
         amount+=amountToIncrease;
     }
 
+    /**
+     * Decrease amount of this commodity in storage
+     * @param amountToDecrease
+     */
     public void decreaseAmount( int amountToDecrease){
         amount-=amountToDecrease;
     }
-
-
 
 }
